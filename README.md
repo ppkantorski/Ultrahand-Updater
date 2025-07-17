@@ -1,6 +1,6 @@
 # Ultrahand Updater
 
-A simple payload for updating atmosphere updater based on TegraExplorer.
+A simple payload for updating Atmosphere updater based on TegraExplorer.
 
 ## Usage
 This payload is utilized automatically by Ultrahand Overlay v1.10.1+ for updating Atmosphere.
