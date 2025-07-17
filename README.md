@@ -1,14 +1,15 @@
 # Ultrahand Updater
 
+A simple payload-based atmosphere updater based on TegraExplorer.
+
+## Usage
+This payload is utilized automatically by Ultrahand Overlay for updating Atmosphere.
+
 [![TegraExplorer builder](https://github.com/suchmememanyskill/TegraExplorer/workflows/TegraExplorer%20builder/badge.svg)](https://github.com/suchmememanyskill/TegraExplorer/actions)
 [![Downloads](https://img.shields.io/github/downloads/suchmememanyskill/TegraExplorer/total)](https://github.com/suchmememanyskill/TegraExplorer/releases)
 [![Version](https://img.shields.io/github/v/release/suchmememanyskill/tegraexplorer)](https://github.com/suchmememanyskill/TegraExplorer/releases)
 [![Donations](https://img.shields.io/badge/Support%20on-Ko--Fi-red)](https://ko-fi.com/suchmememanyskill)
 
-A simple payload-based atmosphere updater based on TegraExplorer.
-
-## Usage
-This payload is utilized automatically by Ultrahand Overlay for updating Atmosphere.
 
 ## Support
 
