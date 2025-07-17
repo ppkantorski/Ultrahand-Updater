@@ -16,6 +16,7 @@ LPVERSION := \"$(LPVERSION_MAJOR).$(LPVERSION_MINOR).$(LPVERSION_BUGFX)\"
 
 ################################################################################
 
+APP_TITLE = ultrahand_updater
 TARGET := TegraExplorer
 BUILDDIR := build
 OUTPUTDIR := output
@@ -57,10 +58,11 @@ LDFLAGS = $(ARCH) -nostartfiles -lgcc -Wl,--nmagic,--gc-sections -Xlinker --defs
 
 .PHONY: all clean
 
-all: $(OUTPUTDIR)/$(TARGET)_small.bin
-	$(eval BIN_SIZE = $(shell wc -c < $(OUTPUTDIR)/$(TARGET).bin))
+
+all: $(OUTPUTDIR)/$(APP_TITLE)_small.bin
+	$(eval BIN_SIZE = $(shell wc -c < $(OUTPUTDIR)/$(APP_TITLE).bin))
 	@echo "Payload size is $(BIN_SIZE)"
-	$(eval COMPR_BIN_SIZE = $(shell wc -c < $(OUTPUTDIR)/$(TARGET)_small.bin))
+	$(eval COMPR_BIN_SIZE = $(shell wc -c < $(OUTPUTDIR)/$(APP_TITLE)_small.bin))
 	@echo "Compressed Payload size is $(COMPR_BIN_SIZE)"
 
 	@echo "Max size is 126296 Bytes."
@@ -72,17 +74,17 @@ clean:
 	@rm -rf $(OUTPUTDIR)
 	@rm -rf $(LOADERDIR)/payload_*.h
 
-$(OUTPUTDIR)/$(TARGET)_small.bin: $(OUTPUTDIR)/$(TARGET).bin
+$(OUTPUTDIR)/$(APP_TITLE)_small.bin: $(OUTPUTDIR)/$(APP_TITLE).bin
 	@$(MAKE) -C $(LZ77DIR)
-	@$(LZ77DIR)/lz77 $(OUTPUTDIR)/$(TARGET).bin
+	@$(LZ77DIR)/lz77 $(OUTPUTDIR)/$(APP_TITLE).bin
 	@$(MAKE) -C $(BIN2CDIR)
-	@$(BIN2CDIR)/bin2c $(OUTPUTDIR)/$(TARGET).bin.00.lz payload_00 > $(LOADERDIR)/payload_00.h
-	@$(BIN2CDIR)/bin2c $(OUTPUTDIR)/$(TARGET).bin.01.lz payload_01 > $(LOADERDIR)/payload_01.h
-	@rm -rf $(OUTPUTDIR)/$(TARGET).bin.*.lz
+	@$(BIN2CDIR)/bin2c $(OUTPUTDIR)/$(APP_TITLE).bin.00.lz payload_00 > $(LOADERDIR)/payload_00.h
+	@$(BIN2CDIR)/bin2c $(OUTPUTDIR)/$(APP_TITLE).bin.01.lz payload_01 > $(LOADERDIR)/payload_01.h
+	@rm -rf $(OUTPUTDIR)/$(APP_TITLE).bin.*.lz
 
-	$(MAKE) -C $(LOADERDIR) PAYLOAD_NAME=$(TARGET)_small
+	$(MAKE) -C $(LOADERDIR) PAYLOAD_NAME=$(APP_TITLE)_small
 
-$(OUTPUTDIR)/$(TARGET).bin: $(BUILDDIR)/$(TARGET)/$(TARGET).elf
+$(OUTPUTDIR)/$(APP_TITLE).bin: $(BUILDDIR)/$(TARGET)/$(TARGET).elf
 	@mkdir -p "$(@D)"
 	$(OBJCOPY) -S -O binary $< $@
 
