@@ -3,7 +3,7 @@
 A simple payload for updating Atmosphere updater based on TegraExplorer.
 
 ## Usage
-This payload is utilized automatically by Ultrahand Overlay v1.10.1+ for updating Atmosphere.
+This payload is utilized automatically by `Ultrahand Overlay v1.10.1+` for updating Atmosphere.
 
 ---
 
