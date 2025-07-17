@@ -159,6 +159,20 @@ int launch_payload(char *path)
 	return 1;
 }
 
+FRESULT rename_file(const char* old, const char* new)
+{
+	FRESULT res = FR_OK;
+	if (f_stat(old, NULL) == FR_OK) {
+		if (f_stat(new, NULL) == FR_OK) {
+			res = f_unlink(new);
+		}
+		if (res == FR_OK) {
+			res = f_rename(old, new);
+		}
+	}
+	return res;
+}
+
 extern void pivot_stack(u32 stack_top);
 
 #define EXCP_EN_ADDR   0x4003FFFC
@@ -277,28 +291,58 @@ void ipl_main()
 
 	hidInit();
 	_show_errors();
-	gfx_clearscreen();
+	gfx_clear_grey(0x1B);
+	//gfx_clearscreen();
 
-	int res = -1;
+	WPRINTF("\n\n\n\n\n\n\n\n\n");
+	WPRINTF("             .__    __                   .__                         .___\n"
+	        "       __ __ |  | _/  |_ _______ _____   |  |__  _____     ____    __| _/\n"
+	        "      |  |  \\|  | \\   __\\\\_  __ \\\\__  \\  |  |  \\ \\__  \\   /    \\  / __ |\n"
+	        "      |  |  /|  |__|  |   |  | \\/ / __ \\_|   Y  \\ / __ \\_|   |  \\/ /_/ |\n"
+	        "      |____/ |____/|__|   |__|   (____  /|___|  /(____  /|___|  /\\____ |\n"
+	        "                               .___   \\/    __\\/      \\/      \\/      \\/ \n"
+	        "             __ __ ______    __| _/_____  _/  |_   ____ _______          \n"
+	        "            |  |  \\\\____ \\  / __ | \\__  \\ \\   __\\_/ __ \\\\_  __ \\         \n"
+	        "            |  |  /|  |_> >/ /_/ |  / __ \\_|  |  \\  ___/ |  | \\/         \n"
+	        "            |____/ |   __/ \\____ | (____  /|__|   \\___  >|__|            \n"
+	        "                   |__|         \\/      \\/            \\/                 \n"
+	        "                                          ____    _______      _______   \n"
+	        "                                  ___  __/_   |   \\   _  \\     \\   _  \\  \n"
+	        "                                  \\  \\/ / |   |   /  /_\\  \\    /  /_\\  \\ \n"
+	        "                                   \\   /  |   |   \\  \\_/   \\   \\  \\_/   \\\n"
+	        "                                    \\_/   |___| /\\ \\_____  / /\\ \\_____  /\n"
+	        "                                                \\/       \\/  \\/       \\/ \n");
+	WPRINTF("\n\n\n                            Time to update Atmosphere again?");
 
-	if (btn_read() & BTN_VOL_DOWN || DumpKeys())
-		res = GetKeysFromFile("sd:/switch/prod.keys");
+	usleep(2000000); // Display the text for a second
 
-	TConf.keysDumped = (res > 0) ? 0 : 1;
+	if (!h_cfg.errors) {
+		// Delete the ini file if it exists
+		if (f_stat("bootloader/ini/ultrahand_updater.bin.ini", NULL) == FR_OK) {
+			f_unlink("bootloader/ini/ultrahand_updater.bin.ini");
+		}
+		rename_file("atmosphere/fusee-secondary.bin.ultra", "atmosphere/fusee-secondary.bin");
+		rename_file("atmosphere/stratosphere.romfs.ultra", "atmosphere/stratosphere.romfs");
+		rename_file("atmosphere/package3.ultra", "atmosphere/package3");
 
-	if (res > 0)
-		DrawError(newErrCode(TE_ERR_KEYDUMP_FAIL));
-	
-	if (TConf.keysDumped)
-		SetKeySlots();
-	
-	if (res == 0)
-		hidWait();
+		// If the console is a patched or Mariko unit
+		if (h_cfg.t210b01 || h_cfg.rcm_patched) {
+			//rename_file("payload.bin.ultra", "payload.bin");
+			power_set_state(POWER_OFF_REBOOT);
+		}
 
-	if (FileExists("sd:/startup.te"))
-		RunScript("sd:/", newFSEntry("startup.te"));
+		else {
+			if (f_stat("bootloader/update.bin", NULL) == FR_OK)
+				launch_payload("bootloader/update.bin");
 
-	EnterMainMenu();
+			if (f_stat("atmosphere/reboot_payload.bin", NULL) == FR_OK)	
+				launch_payload("atmosphere/reboot_payload.bin");
+
+			EPRINTF("Failed to launch payload.");
+		}
+	}
+
+	sd_end();
 
 	// Halt BPMP if we managed to get out of execution.
 	while (true)
