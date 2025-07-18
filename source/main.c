@@ -291,11 +291,11 @@ void ipl_main()
 
 	hidInit();
 	_show_errors();
-	gfx_clear_grey(0x1B);
+	gfx_clear_grey(0x00);
 	//gfx_clearscreen();
 
-	WPRINTF("\n\n\n\n\n\n\n\n\n");
-	WPRINTF("             .__    __                   .__                         .___\n"
+	gfx_printf("\n\n\n\n\n\n\n\n\n");
+	gfx_printf("             .__    __                   .__                         .___\n"
 	        "       __ __ |  | _/  |_ _______ _____   |  |__  _____     ____    __| _/\n"
 	        "      |  |  \\|  | \\   __\\\\_  __ \\\\__  \\  |  |  \\ \\__  \\   /    \\  / __ |\n"
 	        "      |  |  /|  |__|  |   |  | \\/ / __ \\_|   Y  \\ / __ \\_|   |  \\/ /_/ |\n"
@@ -312,7 +312,7 @@ void ipl_main()
 	        "                                   \\   /  |   |   \\  \\_/   \\   \\  \\_/   \\\n"
 	        "                                    \\_/   |___| /\\ \\_____  / /\\ \\_____  /\n"
 	        "                                                \\/       \\/  \\/       \\/ \n");
-	WPRINTF("\n\n\n                            Time to update Atmosphere again?");
+	gfx_printf("\n\n\n                                   Time to update Atmosphere again?");
 
 	usleep(2000000); // Display the text for a second
 
