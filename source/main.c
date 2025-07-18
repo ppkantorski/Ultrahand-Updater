@@ -318,14 +318,14 @@ void ipl_main()
 	gfx_con.fgcol = 0xFFf58758;
 	gfx_printf("                                        Time to update Atmosphere again?");
 
-	usleep(2000000); // Display the text for a second
+	usleep(2000000); // Display the text for 2s
 
 	if (!h_cfg.errors) {
 		// Delete the ini file if it exists
 		if (f_stat("bootloader/ini/ultrahand_updater.bin.ini", NULL) == FR_OK) {
 			f_unlink("bootloader/ini/ultrahand_updater.bin.ini");
 		}
-		rename_file("atmosphere/fusee-secondary.bin.ultra", "atmosphere/fusee-secondary.bin");
+		//rename_file("atmosphere/fusee-secondary.bin.ultra", "atmosphere/fusee-secondary.bin");
 		rename_file("atmosphere/stratosphere.romfs.ultra", "atmosphere/stratosphere.romfs");
 		rename_file("atmosphere/package3.ultra", "atmosphere/package3");
 
