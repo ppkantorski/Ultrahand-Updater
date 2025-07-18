@@ -294,7 +294,7 @@ void ipl_main()
 	gfx_clear_grey(0x00);
 	//gfx_clearscreen();
 
-	gfx_printf("\n\n\n\n\n\n\n\n");
+	gfx_printf("\n\n\n\n\n\n\n\n\n\n");
 	gfx_printf("             .__    __                   .__                         .___\n"
 	           "       __ __ |  | _/  |_ _______ _____   |  |__  _____     ____    __| _/\n"
 	           "      |  |  \\|  | \\   __\\\\_  __ \\\\__  \\  |  |  \\ \\__  \\   /    \\  / __ |\n"
